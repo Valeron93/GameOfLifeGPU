@@ -40,6 +40,8 @@ add_executable(GameOfLife WIN32
     "src/Shader.h"
     "src/util.cpp"
     "src/util.h"
+    "src/GameOfLife.cpp"
+    "src/GameOfLife.h"
     "${imgui_SOURCE_DIR}/imgui.cpp"
     "${imgui_SOURCE_DIR}/imgui_demo.cpp"
     "${imgui_SOURCE_DIR}/imgui_widgets.cpp"
