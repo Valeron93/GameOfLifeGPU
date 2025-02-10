@@ -94,6 +94,9 @@ public:
         }
 
         GLubyte color[4] = { 0xFF, 0xFF, 0xFF, 0xFF };
+        if (!value) {
+            std::fill(color, color + 3, 0);
+        }
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, back_texture);
@@ -106,5 +109,22 @@ public:
     glm::vec2 get_size()
     {
         return glm::vec2(width, height);
+    }
+
+    bool get_cell(int x, int y) {
+        if (x < 0 || x >= width) {
+            return false;
+        }
+        if (y < 0 || y >= height) {
+            return false;
+        }
+
+        glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, front_texture, 0);
+        GLubyte pixel[4];
+        glReadPixels(x, y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, pixel);
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+        return bool(pixel[0]);
     }
 };

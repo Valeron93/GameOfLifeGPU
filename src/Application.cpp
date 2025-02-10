@@ -125,8 +125,8 @@ void Application::on_event(SDL_Event* event)
         auto mouse = glm::vec4(event->button.x, event->button.y, 0.0f, 1.0f);
         auto ndc = window_to_ndc(mouse, window_size_px);
         auto mouse_position_cell = ndc_to_world(ndc, projection_matrix, view_matrix) * glm::vec2(game_of_life.get_size());
-
-        game_of_life.set_cell((int)mouse_position_cell.x, (int)mouse_position_cell.y, true);
+        auto cell_state = game_of_life.get_cell((int)mouse_position_cell.x, (int)mouse_position_cell.y);
+        game_of_life.set_cell((int)mouse_position_cell.x, (int)mouse_position_cell.y, !cell_state);
     } else if (event->type == SDL_EVENT_MOUSE_WHEEL) {
         float wheel = event->wheel.y;
         float scale_factor = 1.0f + (0.25f * fabsf(wheel));
@@ -147,18 +147,22 @@ void Application::update()
 
     auto keyboard = SDL_GetKeyboardState(nullptr);
     auto factor = delta_time * 2.0f * 1.0f / camera_zoom;
-    if (keyboard[SDL_SCANCODE_W]) {
-        camera_position.y -= factor;
-    }
 
-    if (keyboard[SDL_SCANCODE_S]) {
-        camera_position.y += factor;
-    }
-    if (keyboard[SDL_SCANCODE_A]) {
-        camera_position.x += factor;
-    }
-    if (keyboard[SDL_SCANCODE_D]) {
-        camera_position.x -= factor;
+    auto& io = ImGui::GetIO();
+
+    if (!io.WantCaptureKeyboard) {
+        if (keyboard[SDL_SCANCODE_W]) {
+            camera_position.y -= factor;
+        }
+        if (keyboard[SDL_SCANCODE_S]) {
+            camera_position.y += factor;
+        }
+        if (keyboard[SDL_SCANCODE_A]) {
+            camera_position.x += factor;
+        }
+        if (keyboard[SDL_SCANCODE_D]) {
+            camera_position.x -= factor;
+        }
     }
 
     camera_position = glm::clamp(camera_position, glm::vec2(-1.0f), glm::vec2(1.0f));
