@@ -62,12 +62,12 @@ jobs:
       run: cpack -G ZIP
 
     - name: Upload Package as Artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: package-${{ matrix.os }}
         path: build/*.zip
 
-        
+
   release:
     needs: build
     runs-on: ubuntu-latest
@@ -77,7 +77,7 @@ jobs:
 
     steps:
       - name: Download Artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           path: package
 
