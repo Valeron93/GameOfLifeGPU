@@ -3,6 +3,7 @@
 #include "Shader.h"
 #include <cstdlib>
 #include <glad/glad.h>
+#include <glm/glm.hpp>
 #include <vector>
 
 class GameOfLife {
