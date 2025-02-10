@@ -4,12 +4,8 @@ name: CMake on multiple platforms
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-  push:
     tags:
-      - "v*"  # Run only for version tags like v1.0.0
+      - v*.*.*
 
 jobs:
   build:
