@@ -1,0 +1,5 @@
+imgui.ini
+build/
+.vs/
+.DS_Store
+.vscode
