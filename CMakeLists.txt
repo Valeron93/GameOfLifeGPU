@@ -57,3 +57,9 @@ set_target_properties(GameOfLife PROPERTIES
 )
 
 target_link_libraries(GameOfLife PUBLIC SDL3::SDL3-static glad41core glm)
+
+install(TARGETS GameOfLife DESTINATION .)
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/res DESTINATION .)
+
+set(CPACK_GENERATOR "ZIP")
+include(CPack)
