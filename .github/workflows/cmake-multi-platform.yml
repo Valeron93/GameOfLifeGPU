@@ -56,3 +56,35 @@ jobs:
       # Execute tests defined by the CMake configuration. Note that --build-config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
       run: ctest --build-config ${{ matrix.build_type }}
+
+    - name: Package with CPack
+      working-directory: ${{ steps.strings.outputs.build-output-dir }}
+      run: cpack -G ZIP
+
+    - name: Upload Package as Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: package-${{ matrix.os }}
+        path: build/*.zip
+
+        
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v') # Only run for version tags
+    permissions:
+      contents: write  # Required for creating releases
+
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v3
+        with:
+          path: package
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: package/**/*.zip
+          body: "Automated release from GitHub Actions"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
