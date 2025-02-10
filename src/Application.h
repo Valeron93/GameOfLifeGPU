@@ -32,6 +32,8 @@ struct Application {
     float camera_zoom = 1.0f;
 
     bool iterate = false;
+    float iteration_timer = 0.0f;
+    int iterations_per_sec = 30;
 
     GameOfLife game_of_life;
 

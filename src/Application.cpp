@@ -80,10 +80,6 @@ Application::~Application()
 void Application::render()
 {
 
-    if (iterate) {
-        game_of_life.iterate();
-    }
-
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
@@ -111,6 +107,7 @@ void Application::imgui()
     ImGui::Checkbox("Iterate", &iterate);
     ImGui::SliderFloat2("Camera position", glm::value_ptr(camera_position), -1.0f, 1.0f);
     ImGui::SliderFloat("Zoom", &camera_zoom, 0.125f, 64.0f);
+    ImGui::SliderInt("Iterations/sec", &iterations_per_sec, 1, 60, "%d", ImGuiSliderFlags_AlwaysClamp);
     ImGui::End();
 }
 
@@ -149,6 +146,13 @@ void Application::update()
     auto factor = delta_time * 2.0f * 1.0f / camera_zoom;
 
     auto& io = ImGui::GetIO();
+
+    iteration_timer += delta_time;
+
+    if (iterate && iteration_timer > 1.0f / float(iterations_per_sec)) {
+        game_of_life.iterate();
+        iteration_timer = 0;
+    }
 
     if (!io.WantCaptureKeyboard) {
         if (keyboard[SDL_SCANCODE_W]) {
