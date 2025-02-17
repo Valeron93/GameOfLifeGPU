@@ -69,15 +69,12 @@ void Application::imgui()
 {
     ImGui::Begin("Debug Menu");
 
-    ImGui::Text("OpenGL Version: %s", glGetString(GL_VERSION));
-    ImGui::Text("OpenGL Renderer: %s", glGetString(GL_RENDERER));
-
     ImGui::Text("Avg. FPS: %lf", avg_fps);
-
     ImGui::Checkbox("Iterate", &iterate);
     ImGui::SliderFloat2("Camera position", glm::value_ptr(camera_position), -1.0f, 1.0f);
     ImGui::SliderFloat("Zoom", &camera_zoom, 0.125f, 64.0f);
     ImGui::SliderInt("Iterations/sec", &iterations_per_sec, 1, 60, "%d", ImGuiSliderFlags_AlwaysClamp);
+    
     ImGui::End();
 }
 
