@@ -22,8 +22,6 @@ class GameOfLife {
 public:
     GameOfLife();
 
-    // NOTE: valid VAO must be bound so we can render a quad
-    // TODO: render own quad mesh
     void iterate(QuadRenderer& quad);
     GLuint get_texture() const;
     glm::vec2 get_size() const;
