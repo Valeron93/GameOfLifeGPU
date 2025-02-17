@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GameOfLife.h"
+#include "QuadRenderer.h"
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_video.h>
 #include <glad/glad.h>
@@ -15,9 +16,9 @@ struct Application {
     double delta_time;
     double avg_fps = 60;
 
-    GLuint vertex_array = 0;
-    GLuint vertex_buffer = 0;
     GLuint program = 0;
+
+    QuadRenderer quad;
 
     glm::ivec2 window_size_px;
     glm::ivec2 window_size;

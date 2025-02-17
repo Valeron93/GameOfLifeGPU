@@ -91,7 +91,7 @@ bool GameOfLife::get_cell(int x, int y) const
     return bool(pixel[0]);
 }
 
-void GameOfLife::iterate()
+void GameOfLife::iterate(QuadRenderer& quad)
 {
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, front_texture);
@@ -104,7 +104,9 @@ void GameOfLife::iterate()
     glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, front_texture, 0);
     glUseProgram(conway_program);
-    glDrawArrays(GL_TRIANGLES, 0, 6);
+
+    quad.draw();
+
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
     std::swap(front_texture, back_texture);

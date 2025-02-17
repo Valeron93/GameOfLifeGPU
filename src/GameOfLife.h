@@ -1,10 +1,12 @@
 #pragma once
 
+#include "QuadRenderer.h"
 #include "Shader.h"
 #include <cstdlib>
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <vector>
+
 
 class GameOfLife {
 
@@ -22,7 +24,7 @@ public:
 
     // NOTE: valid VAO must be bound so we can render a quad
     // TODO: render own quad mesh
-    void iterate();
+    void iterate(QuadRenderer& quad);
     GLuint get_texture() const;
     glm::vec2 get_size() const;
 

@@ -6,11 +6,6 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <vector>
 
-struct Vertex {
-    glm::vec2 position;
-    glm::vec2 uv;
-};
-
 glm::mat4 orthographic_view(float width, float height, float zoom)
 {
 
@@ -36,29 +31,6 @@ glm::vec2 ndc_to_world(glm::vec4 ndc, const glm::mat4& projection, const glm::ma
 
 Application::Application()
 {
-    glGenBuffers(1, &vertex_buffer);
-    glGenVertexArrays(1, &vertex_array);
-
-    Vertex vertices[] = {
-        { { -1.0f, -1.0f }, { 0, 0 } },
-        { { 1.0f, -1.0f }, { 1.0f, 0.0f } },
-        { { -1.0f, 1.0f }, { 0.0f, 1.0f } },
-
-        { { 1.0f, 1.0f }, { 1.0f, 1.0f } },
-        { { -1.0f, 1.0f }, { 0.0f, 1.0f } },
-        { { 1.0f, -1.0f }, { 1.0f, 0.0f } },
-    };
-
-    glBindVertexArray(vertex_array);
-    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, position));
-    glEnableVertexAttribArray(0);
-
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, uv));
-    glEnableVertexAttribArray(1);
-
     program = shader::load_path("res/default");
     int tex_uni = glGetUniformLocation(program, "tex");
     glUseProgram(program);
@@ -73,8 +45,6 @@ Application::Application()
 Application::~Application()
 {
     glDeleteProgram(program);
-    glDeleteBuffers(1, &vertex_buffer);
-    glDeleteVertexArrays(1, &vertex_array);
 }
 
 void Application::render()
@@ -92,7 +62,7 @@ void Application::render()
     glUniformMatrix4fv(view_matrix_location, 1, false, glm::value_ptr(view_matrix));
     glUniformMatrix4fv(projection_matrix_location, 1, false, glm::value_ptr(projection_matrix));
 
-    glDrawArrays(GL_TRIANGLES, 0, 6);
+    quad.draw();
 }
 
 void Application::imgui()
@@ -150,7 +120,7 @@ void Application::update()
     iteration_timer += delta_time;
 
     if (iterate && iteration_timer > 1.0f / float(iterations_per_sec)) {
-        game_of_life.iterate();
+        game_of_life.iterate(quad);
         iteration_timer = 0;
     }
 
