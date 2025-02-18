@@ -59,14 +59,10 @@ GLuint compile_shader(GLenum shader_type, const char* source)
     return shader;
 }
 
-GLuint load_path(const char* path)
+GLuint load_path(const char* vertex_path, const char* fragment_path)
 {
-    std::string path_base = path;
-    std::string path_vert = path_base + ".vert";
-    std::string path_frag = path_base + ".frag";
-
-    auto vert_src = util::read_all_text(path_vert.c_str());
-    auto frag_src = util::read_all_text(path_frag.c_str());
+    auto vert_src = util::read_all_text(vertex_path);
+    auto frag_src = util::read_all_text(fragment_path);
 
     return load_from_text(vert_src.c_str(), frag_src.c_str());
 }

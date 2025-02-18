@@ -31,7 +31,7 @@ glm::vec2 ndc_to_world(glm::vec4 ndc, const glm::mat4& projection, const glm::ma
 
 Application::Application()
 {
-    program = shader::load_path("res/default");
+    program = shader::load_path("res/default.vert", "res/default.frag");
     int tex_uni = glGetUniformLocation(program, "tex");
     glUseProgram(program);
     glUniform1i(tex_uni, 0);
@@ -74,7 +74,7 @@ void Application::imgui()
     ImGui::SliderFloat2("Camera position", glm::value_ptr(camera_position), -1.0f, 1.0f);
     ImGui::SliderFloat("Zoom", &camera_zoom, 0.125f, 64.0f);
     ImGui::SliderInt("Iterations/sec", &iterations_per_sec, 1, 60, "%d", ImGuiSliderFlags_AlwaysClamp);
-    
+
     ImGui::End();
 }
 

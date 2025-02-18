@@ -2,7 +2,7 @@
 
 GameOfLife::GameOfLife()
 {
-    conway_program = shader::load_path("res/conway");
+    conway_program = shader::load_path("res/default.vert", "res/conway.frag");
     std::vector<unsigned char> randomCells(width * height * 4);
     for (size_t i = 0; i < width * height; i++) {
         bool alive = !(rand() % 3);
