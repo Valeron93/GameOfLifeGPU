@@ -8,7 +8,6 @@
 
 glm::mat4 orthographic_view(float width, float height, float zoom)
 {
-
     auto aspect_ratio = width / height;
     float half_width = (1.0f / zoom) * aspect_ratio;
     float half_height = (1.0f / zoom);
@@ -49,7 +48,6 @@ Application::~Application()
 
 void Application::render()
 {
-
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
@@ -84,13 +82,27 @@ void Application::on_event(SDL_Event* event)
     if (io.WantCaptureMouse) {
         return;
     }
-    if (event->type == SDL_EVENT_MOUSE_BUTTON_DOWN) {
-
+    if (event->type == SDL_EVENT_MOUSE_BUTTON_DOWN && event->button.button == SDL_BUTTON_LEFT) {
         auto mouse = glm::vec4(event->button.x, event->button.y, 0.0f, 1.0f);
         auto ndc = window_to_ndc(mouse, window_size);
         auto mouse_position_cell = ndc_to_world(ndc, projection_matrix, view_matrix) * glm::vec2(game_of_life.get_size());
         auto cell_state = game_of_life.get_cell((int)mouse_position_cell.x, (int)mouse_position_cell.y);
         game_of_life.set_cell((int)mouse_position_cell.x, (int)mouse_position_cell.y, !cell_state);
+    } else if ((event->type == SDL_EVENT_MOUSE_BUTTON_DOWN || event->type == SDL_EVENT_MOUSE_BUTTON_UP) && event->button.button == SDL_BUTTON_RIGHT) {
+
+        if (event->type == SDL_EVENT_MOUSE_BUTTON_DOWN) {
+            dragging = true;
+        } else {
+            dragging = false;
+        }
+
+    } else if (dragging && event->type == SDL_EVENT_MOUSE_MOTION) {
+        glm::vec2 relative_motion = { event->motion.xrel, -event->motion.yrel };
+
+        glm::vec2 camera_translation = relative_motion / glm::vec2(window_size_px);
+        const float speed_coefficient = 2.0f;
+        camera_position += speed_coefficient * camera_translation / camera_zoom;
+
     } else if (event->type == SDL_EVENT_MOUSE_WHEEL) {
         float wheel = event->wheel.y;
         float scale_factor = 1.0f + (0.25f * fabsf(wheel));

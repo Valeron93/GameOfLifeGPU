@@ -38,6 +38,8 @@ struct Application {
 
     GameOfLife game_of_life;
 
+    bool dragging = false;
+    
     Application();
     ~Application();
 
