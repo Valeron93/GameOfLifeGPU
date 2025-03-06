@@ -101,7 +101,7 @@ void Application::on_event(SDL_Event* event)
 
         glm::vec2 camera_translation = relative_motion / glm::vec2(window_size_px);
         const float speed_coefficient = 2.0f;
-        camera_position += speed_coefficient * camera_translation / camera_zoom;
+        camera_position += (speed_coefficient * camera_translation) / camera_zoom;
 
     } else if (event->type == SDL_EVENT_MOUSE_WHEEL) {
         float wheel = event->wheel.y;

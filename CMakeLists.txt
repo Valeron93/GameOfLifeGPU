@@ -8,13 +8,13 @@ set(SDL_STATIC ON)
 
 FetchContent_Declare(
     SDL3
-    URL https://github.com/libsdl-org/SDL/archive/refs/tags/release-3.2.0.zip
+    URL https://github.com/libsdl-org/SDL/archive/refs/tags/release-3.2.8.zip
     DOWNLOAD_EXTRACT_TIMESTAMP TRUE
 )
 
 FetchContent_Declare(
     imgui
-    URL https://github.com/ocornut/imgui/archive/refs/tags/v1.91.7.zip
+    URL https://github.com/ocornut/imgui/archive/refs/tags/v1.91.8.zip
     DOWNLOAD_EXTRACT_TIMESTAMP TRUE
 )
 
