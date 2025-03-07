@@ -2,12 +2,6 @@
 
 A GPU-accelerated version of Conway's Game of Life, implemented using OpenGL shaders for computation. This project uses SDL3 for window management, GLAD for OpenGL function loading, GLM for mathematics, and ImGui for GUI.
 
-## Features
-- **Left Click:** Change the state of a cell in the grid (alive or dead).
-- **Right Click + Drag:** Move the grid around.
-- **Scroll:** Zoom in and out of the grid.
-
-
 ## Building the Project
 
 ```bash
