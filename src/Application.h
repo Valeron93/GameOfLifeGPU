@@ -41,7 +41,7 @@ struct Application {
     bool fullscreen = false;
     bool hide_gui = false;
 
-    Application();
+    Application(SDL_Window* window, SDL_GLContext gl_context);
     ~Application();
 
     void render();

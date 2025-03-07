@@ -30,7 +30,13 @@ FetchContent_Declare(
     DOWNLOAD_EXTRACT_TIMESTAMP TRUE
 )
 
-FetchContent_MakeAvailable(SDL3 imgui glad41core glm)
+FetchContent_Declare(
+    stb
+    URL https://github.com/nothings/stb/archive/5c205738c191bcb0abc65c4febfa9bd25ff35234.zip
+    DOWNLOAD_EXTRACT_TIMESTAMP TRUE
+)
+
+FetchContent_MakeAvailable(SDL3 imgui glad41core glm stb)
 
 add_executable(GameOfLife WIN32
     "src/main.cpp"
@@ -46,6 +52,7 @@ add_executable(GameOfLife WIN32
     "src/QuadRenderer.h"
     "src/Camera.cpp"
     "src/Camera.h"
+    "src/stb_impl.c"
     "${imgui_SOURCE_DIR}/imgui.cpp"
     "${imgui_SOURCE_DIR}/imgui_demo.cpp"
     "${imgui_SOURCE_DIR}/imgui_widgets.cpp"
@@ -63,6 +70,7 @@ set_target_properties(GameOfLife PROPERTIES
 )
 
 target_link_libraries(GameOfLife PUBLIC SDL3::SDL3-static glad41core glm)
+target_include_directories(GameOfLife PUBLIC ${stb_SOURCE_DIR})
 
 install(TARGETS GameOfLife DESTINATION .)
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/res DESTINATION .)

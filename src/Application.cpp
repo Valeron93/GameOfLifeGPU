@@ -4,9 +4,12 @@
 #include <algorithm>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <stb_image.h>
 #include <vector>
 
-Application::Application()
+Application::Application(SDL_Window* window, SDL_GLContext gl_context)
+    : window(window)
+    , gl_context(gl_context)
 {
     program = shader::load_path("res/default.vert", "res/default.frag");
     int tex_uni = glGetUniformLocation(program, "tex");
@@ -15,6 +18,16 @@ Application::Application()
 
     view_projection_matrix_location = glGetUniformLocation(program, "view_projection_matrix");
     SDL_GL_SetSwapInterval(1);
+    glm::ivec2 image_size;
+    uint8_t* image_data = stbi_load("res/icon.png", &image_size.x, &image_size.y, nullptr, 4);
+    if (image_data) {
+        auto icon_surface = SDL_CreateSurfaceFrom(image_size.x, image_size.y, SDL_PIXELFORMAT_ABGR8888, image_data, image_size.x * 4);
+        SDL_SetWindowIcon(window, icon_surface);
+        SDL_DestroySurface(icon_surface);
+        stbi_image_free(image_data);
+    } else {
+        SDL_Log("Failed to load icon");
+    }
 }
 
 Application::~Application()
@@ -45,7 +58,6 @@ void Application::imgui()
     }
     ImGui::Begin("Settings");
 
-    
     ImGui::Checkbox("Iterate", &iterate);
     if (ImGui::Button("Iterate Once")) {
         game_of_life.iterate();
@@ -170,7 +182,6 @@ void Application::on_keyboard_event(SDL_Event* event)
         } else if (event->key.key == SDLK_E && !event->key.repeat && !iterate) {
             game_of_life.iterate();
         }
-
     }
 }
 

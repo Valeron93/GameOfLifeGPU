@@ -33,9 +33,7 @@ SDL_AppResult SDL_AppInit(void** state, int argc, char** argv)
     ImGui_ImplSDL3_InitForOpenGL(window, gl_context);
     ImGui_ImplOpenGL3_Init();
 
-    auto* app = new Application;
-    app->window = window;
-    app->gl_context = gl_context;
+    auto* app = new Application(window, gl_context);
     app->last_time = SDL_GetPerformanceCounter();
     *state = app;
 

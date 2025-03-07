@@ -1,6 +1,6 @@
 # GameOfLifeGPU
 
-A GPU-accelerated version of Conway's Game of Life, implemented using OpenGL shaders for computation. This project uses SDL3 for window management, GLAD for OpenGL function loading, GLM for mathematics, and ImGui for GUI.
+A GPU-accelerated version of Conway's Game of Life, implemented using OpenGL shaders for computation. This project uses SDL3 for window management, GLAD for OpenGL function loading, GLM for mathematics, ImGui for GUI and stb_image for image loading.
 
 ## Building the Project
 
@@ -42,3 +42,4 @@ cpack
 - [GLAD](https://github.com/Dav1dde/glad)
 - [GLM](https://github.com/g-truc/glm)
 - [ImGui](https://github.com/ocornut/imgui)
+- [STB](https://github.com/nothings/stb)
