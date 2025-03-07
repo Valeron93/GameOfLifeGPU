@@ -15,7 +15,6 @@ struct Application {
 
     uint64_t last_time;
     double delta_time;
-    double avg_fps = 60;
 
     GLuint program = 0;
 

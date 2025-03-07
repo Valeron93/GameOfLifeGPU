@@ -45,7 +45,7 @@ void Application::imgui()
     }
     ImGui::Begin("Settings");
 
-    ImGui::Text("Avg. FPS: %lf", avg_fps);
+    
     ImGui::Checkbox("Iterate", &iterate);
     if (ImGui::Button("Iterate Once")) {
         game_of_life.iterate();
@@ -78,6 +78,7 @@ void Application::imgui()
         auto m = cam.screen_to_world(mouse);
         ImGui::Text("Mouse (world): X: %f Y: %f", m.x, m.y);
         ImGui::Text("Zoom: %f", cam.get_zoom());
+        ImGui::Text("FPS: %lf", 1.0f / delta_time);
     }
     ImGui::End();
 }
@@ -207,9 +208,6 @@ void Application::on_mouse_wheel_event(SDL_Event* event)
 
 void Application::update()
 {
-    auto fps = 1.0 / delta_time;
-    avg_fps = (avg_fps + fps) * 0.5;
-
     SDL_GetWindowSize(window, &window_size.x, &window_size.y);
     SDL_GetWindowSizeInPixels(window, &window_size_px.x, &window_size_px.y);
     cam.set_size(window_size);
