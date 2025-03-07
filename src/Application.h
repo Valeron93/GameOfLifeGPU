@@ -28,6 +28,7 @@ struct Application {
 
     const float camera_min_zoom = 1.0f;
     const float camera_max_zoom = 64.0f;
+    float display_scale = 1.0f;
     Camera cam;
 
     bool iterate = false;

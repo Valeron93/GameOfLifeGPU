@@ -73,8 +73,16 @@ void Application::on_event(SDL_Event* event)
         glm::vec2 relative_motion = { event->motion.xrel, -event->motion.yrel };
 
         glm::vec2 camera_translation = relative_motion / glm::vec2(window_size_px);
-        const float speed_coefficient = 2.0f;
 
+// NOTE: on macOS with Retina displays screen panning is slower, multiplying by the
+// screen scaling factors helps, but on Windows it stays consistent no matter what screen scale is.
+// May be a bug in SDL.
+// TODO: test this behaviour on Linux
+#ifdef __APPLE__
+        const float speed_coefficient = 2.0f * display_scale;
+#else
+        const float speed_coefficient = 2.0f;
+#endif
         cam.translate(speed_coefficient * camera_translation);
     } else if (event->type == SDL_EVENT_MOUSE_WHEEL) {
         float wheel = event->wheel.y;
@@ -85,6 +93,8 @@ void Application::on_event(SDL_Event* event)
         glm::vec2 mouse_pos;
         SDL_GetMouseState(&mouse_pos.x, &mouse_pos.y);
         cam.zoom_by(mouse_pos, scale_factor, camera_min_zoom, camera_max_zoom);
+    } else if (event->type == SDL_EVENT_WINDOW_DISPLAY_SCALE_CHANGED) {
+        display_scale = SDL_GetWindowDisplayScale(window);
     }
 }
 
