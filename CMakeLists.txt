@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.21)
 
-project(GameOfLife VERSION 0.0.3)
+project(GameOfLife VERSION 0.0.4)
 
 include(FetchContent)
 
