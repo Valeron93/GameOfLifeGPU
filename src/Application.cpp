@@ -47,6 +47,9 @@ void Application::imgui()
 
     ImGui::Text("Avg. FPS: %lf", avg_fps);
     ImGui::Checkbox("Iterate", &iterate);
+    if (ImGui::Button("Iterate Once")) {
+        game_of_life.iterate();
+    }
     ImGui::SliderInt("Iterations/sec", &iterations_per_sec, 1, 60, "%d", ImGuiSliderFlags_AlwaysClamp);
 
     if (ImGui::Button("Randomize field")) {
@@ -61,6 +64,7 @@ void Application::imgui()
         ImGui::Text("Controls:");
         ImGui::BulletText("F - Switch Fullscreen");
         ImGui::BulletText("H - Show/Hide Interface");
+        ImGui::BulletText("E - Iterate Once");
         ImGui::BulletText("Space - Start/Stop Iterating");
         ImGui::BulletText("Left Mouse Button - Change Cell State");
         ImGui::BulletText("Right Mouse Button - Pan Around");
@@ -162,7 +166,10 @@ void Application::on_keyboard_event(SDL_Event* event)
             hide_gui = !hide_gui;
         } else if (event->key.key == SDLK_SPACE) {
             iterate = !iterate;
+        } else if (event->key.key == SDLK_E && !event->key.repeat && !iterate) {
+            game_of_life.iterate();
         }
+
     }
 }
 

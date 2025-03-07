@@ -31,6 +31,7 @@ cpack
 - **Mouse Scroll:** Zoom in and out.
 - **H** - Toggle GUI Visibility.
 - **F** - Toggle Fullscreen Mode.
+- **E** - Iterate Once
 
 ## Current TODOs
 - [x] Implement basic Conway's Game Of Life running on GPU
