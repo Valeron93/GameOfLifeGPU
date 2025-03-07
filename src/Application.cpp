@@ -28,11 +28,14 @@ Application::Application(SDL_Window* window, SDL_GLContext gl_context)
     } else {
         SDL_Log("Failed to load icon");
     }
+
+    pan_cursor = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_MOVE);
 }
 
 Application::~Application()
 {
     glDeleteProgram(program);
+    SDL_DestroyCursor(pan_cursor);
 }
 
 void Application::render()
@@ -198,10 +201,12 @@ void Application::on_mouse_btn_event(SDL_Event* event)
         switch (event->type) {
         case SDL_EVENT_MOUSE_BUTTON_DOWN:
             dragging = true;
+            SDL_SetCursor(pan_cursor);
             SDL_GetMouseState(&last_drag_point.x, &last_drag_point.y);
             break;
 
         case SDL_EVENT_MOUSE_BUTTON_UP:
+            SDL_SetCursor(SDL_GetDefaultCursor());
             dragging = false;
             break;
         }

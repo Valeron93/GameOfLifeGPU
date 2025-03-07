@@ -41,6 +41,8 @@ struct Application {
     bool fullscreen = false;
     bool hide_gui = false;
 
+    SDL_Cursor* pan_cursor = nullptr;
+
     Application(SDL_Window* window, SDL_GLContext gl_context);
     ~Application();
 
