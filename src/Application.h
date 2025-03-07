@@ -38,6 +38,9 @@ struct Application {
     GameOfLife game_of_life;
 
     bool dragging = false;
+    glm::vec2 last_drag_point = glm::vec2(0.0f);
+    bool fullscreen = false;
+    bool hide_gui = false;
 
     Application();
     ~Application();
@@ -45,5 +48,10 @@ struct Application {
     void render();
     void imgui();
     void on_event(SDL_Event* event);
+    void on_mouse_event(SDL_Event* event);
+    void on_mouse_motion_event(SDL_Event* event);
+    void on_keyboard_event(SDL_Event* event);
+    void on_mouse_btn_event(SDL_Event* event);
+    void on_mouse_wheel_event(SDL_Event* event);
     void update();
 };

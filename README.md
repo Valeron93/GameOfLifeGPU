@@ -29,6 +29,8 @@ cpack
 - **Left Click:** Toggle the state of a cell (alive or dead).
 - **Right Click + Drag:** Move around the grid to view different areas.
 - **Mouse Scroll:** Zoom in and out.
+- **H** - Toggle GUI Visibility.
+- **F** - Toggle Fullscreen Mode.
 
 ## Current TODOs
 - [x] Implement basic Conway's Game Of Life running on GPU
