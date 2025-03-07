@@ -6,28 +6,6 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <vector>
 
-glm::mat4 orthographic_view(float width, float height, float zoom)
-{
-    auto aspect_ratio = width / height;
-    float half_width = (1.0f / zoom) * aspect_ratio;
-    float half_height = (1.0f / zoom);
-
-    return glm::ortho(-half_width, half_width, -half_height, half_height, -1.0f, 1.0f);
-}
-
-glm::vec4 window_to_ndc(glm::vec2 position, glm::vec2 window_size)
-{
-    float x = (2.0f * position.x) / window_size.x - 1.0f;
-    float y = 1.0f - (2.0f * position.y) / window_size.y;
-    return glm::vec4(x, y, 0.0f, 1.0f);
-}
-
-glm::vec2 ndc_to_world(glm::vec4 ndc, const glm::mat4& projection, const glm::mat4& view)
-{
-    auto position = ((glm::inverse(projection * view) * ndc) + glm::vec4(1.0f)) / glm::vec4(2.0f);
-    return { position.x, position.y };
-}
-
 Application::Application()
 {
     program = shader::load_path("res/default.vert", "res/default.frag");
@@ -35,9 +13,7 @@ Application::Application()
     glUseProgram(program);
     glUniform1i(tex_uni, 0);
 
-    view_matrix_location = glGetUniformLocation(program, "view_matrix");
-    projection_matrix_location = glGetUniformLocation(program, "projection_matrix");
-
+    view_projection_matrix_location = glGetUniformLocation(program, "view_projection_matrix");
     SDL_GL_SetSwapInterval(1);
 }
 
@@ -57,8 +33,7 @@ void Application::render()
     glViewport(0, 0, window_size_px.x, window_size_px.y);
     glUseProgram(program);
 
-    glUniformMatrix4fv(view_matrix_location, 1, false, glm::value_ptr(view_matrix));
-    glUniformMatrix4fv(projection_matrix_location, 1, false, glm::value_ptr(projection_matrix));
+    glUniformMatrix4fv(view_projection_matrix_location, 1, false, glm::value_ptr(cam.get_view_projection()));
 
     quad.draw();
 }
@@ -69,8 +44,6 @@ void Application::imgui()
 
     ImGui::Text("Avg. FPS: %lf", avg_fps);
     ImGui::Checkbox("Iterate", &iterate);
-    ImGui::SliderFloat2("Camera position", glm::value_ptr(camera_position), -1.0f, 1.0f);
-    ImGui::SliderFloat("Zoom", &camera_zoom, 0.125f, 64.0f);
     ImGui::SliderInt("Iterations/sec", &iterations_per_sec, 1, 60, "%d", ImGuiSliderFlags_AlwaysClamp);
 
     ImGui::End();
@@ -84,8 +57,8 @@ void Application::on_event(SDL_Event* event)
     }
     if (event->type == SDL_EVENT_MOUSE_BUTTON_DOWN && event->button.button == SDL_BUTTON_LEFT) {
         auto mouse = glm::vec4(event->button.x, event->button.y, 0.0f, 1.0f);
-        auto ndc = window_to_ndc(mouse, window_size);
-        auto mouse_position_cell = ndc_to_world(ndc, projection_matrix, view_matrix) * glm::vec2(game_of_life.get_size());
+
+        auto mouse_position_cell = cam.screen_to_world(mouse) * glm::vec2(game_of_life.get_size());
         auto cell_state = game_of_life.get_cell((int)mouse_position_cell.x, (int)mouse_position_cell.y);
         game_of_life.set_cell((int)mouse_position_cell.x, (int)mouse_position_cell.y, !cell_state);
     } else if ((event->type == SDL_EVENT_MOUSE_BUTTON_DOWN || event->type == SDL_EVENT_MOUSE_BUTTON_UP) && event->button.button == SDL_BUTTON_RIGHT) {
@@ -101,15 +74,17 @@ void Application::on_event(SDL_Event* event)
 
         glm::vec2 camera_translation = relative_motion / glm::vec2(window_size_px);
         const float speed_coefficient = 2.0f;
-        camera_position += (speed_coefficient * camera_translation) / camera_zoom;
 
+        cam.translate(speed_coefficient * camera_translation);
     } else if (event->type == SDL_EVENT_MOUSE_WHEEL) {
         float wheel = event->wheel.y;
         float scale_factor = 1.0f + (0.25f * fabsf(wheel));
         if (wheel < 0)
             scale_factor = 1.0f / scale_factor;
 
-        camera_zoom = glm::clamp(camera_zoom * scale_factor, 0.5f, 64.0f);
+        glm::vec2 mouse_pos;
+        SDL_GetMouseState(&mouse_pos.x, &mouse_pos.y);
+        cam.zoom_by(mouse_pos, scale_factor, camera_min_zoom, camera_max_zoom);
     }
 }
 
@@ -120,9 +95,9 @@ void Application::update()
 
     SDL_GetWindowSize(window, &window_size.x, &window_size.y);
     SDL_GetWindowSizeInPixels(window, &window_size_px.x, &window_size_px.y);
+    cam.set_size(window_size);
 
     auto keyboard = SDL_GetKeyboardState(nullptr);
-    auto factor = delta_time * 2.0f * 1.0f / camera_zoom;
 
     auto& io = ImGui::GetIO();
 
@@ -132,24 +107,4 @@ void Application::update()
         game_of_life.iterate(quad);
         iteration_timer = 0;
     }
-
-    if (!io.WantCaptureKeyboard) {
-        if (keyboard[SDL_SCANCODE_W]) {
-            camera_position.y -= factor;
-        }
-        if (keyboard[SDL_SCANCODE_S]) {
-            camera_position.y += factor;
-        }
-        if (keyboard[SDL_SCANCODE_A]) {
-            camera_position.x += factor;
-        }
-        if (keyboard[SDL_SCANCODE_D]) {
-            camera_position.x -= factor;
-        }
-    }
-
-    camera_position = glm::clamp(camera_position, glm::vec2(-1.0f), glm::vec2(1.0f));
-
-    view_matrix = glm::translate(glm::mat4(1.0f), glm::vec3(camera_position, 1.0f));
-    projection_matrix = orthographic_view(window_size.x, window_size.y, camera_zoom);
 }

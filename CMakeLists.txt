@@ -44,6 +44,8 @@ add_executable(GameOfLife WIN32
     "src/GameOfLife.h"
     "src/QuadRenderer.cpp"
     "src/QuadRenderer.h"
+    "src/Camera.cpp"
+    "src/Camera.h"
     "${imgui_SOURCE_DIR}/imgui.cpp"
     "${imgui_SOURCE_DIR}/imgui_demo.cpp"
     "${imgui_SOURCE_DIR}/imgui_widgets.cpp"

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Camera.h"
 #include "GameOfLife.h"
 #include "QuadRenderer.h"
 #include <SDL3/SDL.h>
@@ -23,14 +24,11 @@ struct Application {
     glm::ivec2 window_size_px;
     glm::ivec2 window_size;
 
-    GLint view_matrix_location;
-    GLint projection_matrix_location;
+    GLint view_projection_matrix_location;
 
-    glm::mat4 view_matrix;
-    glm::mat4 projection_matrix;
-
-    glm::vec2 camera_position = glm::vec2(0.0f);
-    float camera_zoom = 1.0f;
+    const float camera_min_zoom = 0.5f;
+    const float camera_max_zoom = 64.0f;
+    Camera cam;
 
     bool iterate = false;
     float iteration_timer = 0.0f;
@@ -39,7 +37,7 @@ struct Application {
     GameOfLife game_of_life;
 
     bool dragging = false;
-    
+
     Application();
     ~Application();
 
