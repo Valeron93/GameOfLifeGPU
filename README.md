@@ -36,9 +36,10 @@ cpack
 - [x] Implement basic Conway's Game Of Life running on GPU
 - [x] Add dragging, zooming
 - [x] Set up GitHub Actions for automated releases (currently Windows only)
-- [ ] Implement random field generation on GPU
+- [x] Implement random field generation on GPU
 - [ ] Add dynamic field resizing
 - [ ] Experiment with visual effects
+- [ ] Implement drawing on the field
 
 ## Credits
 - [Conway's Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life)

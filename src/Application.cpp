@@ -49,6 +49,14 @@ void Application::imgui()
     ImGui::Checkbox("Iterate", &iterate);
     ImGui::SliderInt("Iterations/sec", &iterations_per_sec, 1, 60, "%d", ImGuiSliderFlags_AlwaysClamp);
 
+    if (ImGui::Button("Randomize field")) {
+        game_of_life.randomize_texture();
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Clear field")) {
+        game_of_life.clear_texture();
+    }
+
     if (ImGui::CollapsingHeader("Help")) {
         ImGui::Text("Controls:");
         ImGui::BulletText("F - Switch Fullscreen");
@@ -206,7 +214,7 @@ void Application::update()
     iteration_timer += delta_time;
 
     if (iterate && iteration_timer > 1.0f / float(iterations_per_sec)) {
-        game_of_life.iterate(quad);
+        game_of_life.iterate();
         iteration_timer = 0;
     }
 }
