@@ -26,7 +26,7 @@ struct Application {
 
     GLint view_projection_matrix_location;
 
-    const float camera_min_zoom = 0.5f;
+    const float camera_min_zoom = 1.0f;
     const float camera_max_zoom = 64.0f;
     Camera cam;
 

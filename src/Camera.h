@@ -21,4 +21,7 @@ public:
     void set_size(glm::vec2 screen_size);
 
     float get_zoom() const;
+
+private:
+    void clamp_target_position();
 };

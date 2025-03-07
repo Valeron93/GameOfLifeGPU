@@ -29,8 +29,9 @@ glm::vec2 Camera::screen_to_world(glm::vec2 point)
 
 void Camera::zoom_by(glm::vec2 mouse_point, float scale, float zoom_min, float zoom_max)
 {
-    dirty = true;
     glm::vec2 world_mouse = screen_to_world(mouse_point);
+
+    dirty = true;
     zoom = glm::clamp(zoom * scale, zoom_min, zoom_max);
     glm::vec2 world_mouse_new = screen_to_world(mouse_point);
 
@@ -42,6 +43,7 @@ void Camera::translate(glm::vec2 translation)
 {
     dirty = true;
     target += translation / zoom;
+    clamp_target_position();
 }
 
 void Camera::set_size(glm::vec2 screen_size)
@@ -53,4 +55,9 @@ void Camera::set_size(glm::vec2 screen_size)
 float Camera::get_zoom() const
 {
     return zoom;
+}
+
+void Camera::clamp_target_position()
+{
+    target = glm::clamp(target, glm::vec2(-1.0f), glm::vec2(1.0f));
 }
