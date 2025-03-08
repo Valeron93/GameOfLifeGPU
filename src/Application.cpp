@@ -154,16 +154,8 @@ void Application::on_mouse_motion_event(SDL_Event* event)
     glm::vec2 camera_translation = relative_motion / glm::vec2(window_size);
     camera_translation.x *= float(window_size.x) / float(window_size.y);
     last_drag_point = motion;
-
-// NOTE: on macOS with Retina displays screen panning is slower, multiplying by the
-// screen scaling factors helps, but on Windows it stays consistent no matter what screen scale is.
-// May be a bug in SDL.
-// TODO: test this behaviour on Linux
-#ifdef __APPLE__
-    const float speed_coefficient = 2.0f * display_scale;
-#else
+    
     const float speed_coefficient = 2.0f;
-#endif
 
     cam.translate(speed_coefficient * camera_translation);
 }
