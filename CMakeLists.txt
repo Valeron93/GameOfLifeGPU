@@ -64,7 +64,7 @@ add_executable(GameOfLife WIN32
     "${imgui_SOURCE_DIR}/backends/imgui_impl_opengl3.cpp")
 
 target_include_directories(GameOfLife PUBLIC ${imgui_SOURCE_DIR})
-target_compile_definitions(GameOfLife PRIVATE 
+target_compile_definitions(GameOfLife PRIVATE
     GLFW_INCLUDE_NONE
     GOL_PROJECT_VERSION="${CMAKE_PROJECT_VERSION}"
     $<$<CONFIG:Debug>:GOL_DEBUG>
@@ -77,6 +77,10 @@ set_target_properties(GameOfLife PROPERTIES
     CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
 )
+
+if(WIN32)
+    target_sources(GameOfLife PRIVATE "resources/app.rc")
+endif(WIN32)
 
 target_link_libraries(GameOfLife PUBLIC SDL3::SDL3-static glad41core glm)
 target_include_directories(GameOfLife PUBLIC ${stb_SOURCE_DIR})
