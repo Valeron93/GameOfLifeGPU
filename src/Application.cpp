@@ -101,6 +101,14 @@ void Application::imgui()
         ImGui::BulletText("Right Mouse Button - Pan Around");
     }
 
+    if (ImGui::CollapsingHeader("About")) {
+        ImGui::Text("Game Of Life GPU v" GOL_PROJECT_VERSION);
+        ImGui::Text("Project page on GitHub:");
+        ImGui::SameLine();
+        ImGui::TextLinkOpenURL("Open", "https://github.com/Valeron93/GameOfLifeGPU");
+    }
+
+#ifdef GOL_DEBUG
     if (ImGui::CollapsingHeader("Debug Info")) {
         glm::vec2 mouse;
         SDL_GetMouseState(&mouse.x, &mouse.y);
@@ -111,6 +119,7 @@ void Application::imgui()
         ImGui::Text("Zoom: %f", cam.get_zoom());
         ImGui::Text("FPS: %lf", 1.0f / delta_time);
     }
+#endif
     ImGui::End();
 }
 
