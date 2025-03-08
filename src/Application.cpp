@@ -10,6 +10,7 @@
 Application::Application(SDL_Window* window, SDL_GLContext gl_context)
     : window(window)
     , gl_context(gl_context)
+    , game_of_life(field_size)
 {
     program = shader::load_path("res/default.vert", "res/default.frag");
     int tex_uni = glGetUniformLocation(program, "tex");
@@ -30,6 +31,7 @@ Application::Application(SDL_Window* window, SDL_GLContext gl_context)
     }
 
     pan_cursor = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_MOVE);
+    glGetIntegerv(GL_MAX_TEXTURE_SIZE, &max_texture_size);
 }
 
 Application::~Application()
@@ -75,6 +77,12 @@ void Application::imgui()
         game_of_life.clear_texture();
     }
 
+    if (ImGui::DragInt("Field Size", &field_size, 10.0f, 10, max_texture_size, "%d", ImGuiSliderFlags_AlwaysClamp)) {
+        game_of_life.resize(field_size);
+        camera_max_zoom = glm::max(1.0f, float(field_size) * (64.0f / 1000.0f));
+        cam.set_zoom(glm::clamp(cam.get_zoom(), camera_min_zoom, camera_max_zoom));
+    }
+
     if (ImGui::CollapsingHeader("Help")) {
         ImGui::Text("Controls:");
         ImGui::BulletText("F - Switch Fullscreen");
@@ -114,10 +122,6 @@ void Application::on_event(SDL_Event* event)
     case SDL_EVENT_KEY_UP:
         on_keyboard_event(event);
         break;
-
-    case SDL_EVENT_WINDOW_DISPLAY_SCALE_CHANGED:
-        display_scale = SDL_GetWindowDisplayScale(window);
-        break;
     }
 }
 
@@ -154,7 +158,7 @@ void Application::on_mouse_motion_event(SDL_Event* event)
     glm::vec2 camera_translation = relative_motion / glm::vec2(window_size);
     camera_translation.x *= float(window_size.x) / float(window_size.y);
     last_drag_point = motion;
-    
+
     const float speed_coefficient = 2.0f;
 
     cam.translate(speed_coefficient * camera_translation);

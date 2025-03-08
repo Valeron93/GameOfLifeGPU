@@ -26,7 +26,7 @@ class GameOfLife {
     std::uniform_real_distribution<float> random_distribution;
 
 public:
-    GameOfLife();
+    GameOfLife(int size);
     void iterate();
     GLuint get_texture() const;
     glm::vec2 get_size() const;
@@ -36,4 +36,5 @@ public:
 
     void randomize_texture();
     void clear_texture();
+    void resize(int size);
 };

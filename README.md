@@ -32,7 +32,7 @@ cpack
 - [x] Add dragging, zooming
 - [x] Set up GitHub Actions for automated releases (currently Windows only)
 - [x] Implement random field generation on GPU
-- [ ] Add dynamic field resizing
+- [x] Add dynamic field resizing
 - [ ] Experiment with visual effects
 - [ ] Implement drawing on the field
 

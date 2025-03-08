@@ -1,8 +1,10 @@
 #include "GameOfLife.h"
 
-GameOfLife::GameOfLife()
+GameOfLife::GameOfLife(int size)
     : random_algorithm(std::random_device {}())
     , random_distribution(0.1f, 0.9f)
+    , width(size)
+    , height(size)
 {
     conway_program = shader::load_path("res/default.vert", "res/conway.frag");
     random_texture_program = shader::load_path("res/default.vert", "res/random_tex.frag");
@@ -100,6 +102,20 @@ void GameOfLife::clear_texture()
     glClear(GL_COLOR_BUFFER_BIT);
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+void GameOfLife::resize(int size)
+{
+    width = size;
+    height = size;
+
+    glBindTexture(GL_TEXTURE_2D, front_texture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+
+    glBindTexture(GL_TEXTURE_2D, back_texture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+
+    randomize_texture();
 }
 
 bool GameOfLife::get_cell(int x, int y) const

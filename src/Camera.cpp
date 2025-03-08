@@ -52,6 +52,11 @@ void Camera::set_size(glm::vec2 screen_size)
     this->screen_size = screen_size;
 }
 
+void Camera::set_zoom(float value)
+{
+    zoom = value;
+}
+
 float Camera::get_zoom() const
 {
     return zoom;

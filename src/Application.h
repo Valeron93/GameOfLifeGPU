@@ -26,15 +26,16 @@ struct Application {
     GLint view_projection_matrix_location;
 
     const float camera_min_zoom = 1.0f;
-    const float camera_max_zoom = 64.0f;
-    float display_scale = 1.0f;
+    float camera_max_zoom = 64.0f;
     Camera cam;
 
     bool iterate = false;
     float iteration_timer = 0.0f;
     int iterations_per_sec = 30;
 
+    int field_size = 1000;
     GameOfLife game_of_life;
+    int max_texture_size;
 
     bool dragging = false;
     glm::vec2 last_drag_point = glm::vec2(0.0f);
