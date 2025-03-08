@@ -5,6 +5,8 @@ project(GameOfLife VERSION 0.0.6)
 include(FetchContent)
 
 set(SDL_STATIC ON)
+set(SDL_SHARED OFF)
+set(SDL_TEST_LIBRARY OFF)
 
 FetchContent_Declare(
     SDL3
