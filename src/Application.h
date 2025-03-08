@@ -24,6 +24,8 @@ struct Application {
     glm::ivec2 window_size;
 
     GLint view_projection_matrix_location;
+    GLint alive_cell_color_location;
+    GLint dead_cell_color_location;
 
     const float camera_min_zoom = 1.0f;
     float camera_max_zoom = 64.0f;
@@ -36,6 +38,9 @@ struct Application {
     int field_size = 1000;
     GameOfLife game_of_life;
     int max_texture_size;
+
+    glm::vec4 alive_cell_color = glm::vec4(1.0f);
+    glm::vec4 dead_cell_color = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
 
     bool dragging = false;
     glm::vec2 last_drag_point = glm::vec2(0.0f);

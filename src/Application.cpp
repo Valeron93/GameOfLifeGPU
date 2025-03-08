@@ -18,6 +18,8 @@ Application::Application(SDL_Window* window, SDL_GLContext gl_context)
     glUniform1i(tex_uni, 0);
 
     view_projection_matrix_location = glGetUniformLocation(program, "view_projection_matrix");
+    alive_cell_color_location = glGetUniformLocation(program, "alive_cell_color");
+    dead_cell_color_location = glGetUniformLocation(program, "dead_cell_color");
     SDL_GL_SetSwapInterval(1);
     glm::ivec2 image_size;
     uint8_t* image_data = stbi_load("res/icon.png", &image_size.x, &image_size.y, nullptr, 4);
@@ -52,7 +54,8 @@ void Application::render()
     glUseProgram(program);
 
     glUniformMatrix4fv(view_projection_matrix_location, 1, false, glm::value_ptr(cam.get_view_projection()));
-
+    glUniform4fv(alive_cell_color_location, 1, glm::value_ptr(alive_cell_color));
+    glUniform4fv(dead_cell_color_location, 1, glm::value_ptr(dead_cell_color));
     quad.draw();
 }
 
@@ -81,6 +84,11 @@ void Application::imgui()
         game_of_life.resize(field_size);
         camera_max_zoom = glm::max(1.0f, float(field_size) * (64.0f / 1000.0f));
         cam.set_zoom(glm::clamp(cam.get_zoom(), camera_min_zoom, camera_max_zoom));
+    }
+
+    if (ImGui::CollapsingHeader("Colors")) {
+        ImGui::ColorEdit3("Alive Cell Color", glm::value_ptr(alive_cell_color));
+        ImGui::ColorEdit3("Dead Cell Color", glm::value_ptr(dead_cell_color));
     }
 
     if (ImGui::CollapsingHeader("Help")) {

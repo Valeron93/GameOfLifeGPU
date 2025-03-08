@@ -3,11 +3,13 @@
 out vec4 FragColor;
 
 uniform sampler2D tex;
+uniform vec4 alive_cell_color;
+uniform vec4 dead_cell_color;
 
 in vec2 uv;
 
 void main()
 {
-    FragColor = texture(tex, uv);
-    // FragColor = vec4(uv, 0.0, 1.0);
+    float state = texture(tex, uv).r;
+    FragColor = mix(dead_cell_color, alive_cell_color, state);
 } 
