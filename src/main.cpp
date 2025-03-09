@@ -84,5 +84,6 @@ void SDL_AppQuit(void* state, SDL_AppResult result)
     ImGui::DestroyContext();
 
     SDL_DestroyWindow(app.window);
+    delete &app;
     SDL_Quit();
 }
