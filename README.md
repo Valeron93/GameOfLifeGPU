@@ -17,7 +17,7 @@ cmake --build build
 cd build
 cpack
 ```
-*NOTE: On Linux you might have to install additional packages to build SDL3, please refer to the SDL3 FAQ*
+*NOTE: On Linux you might have to install additional packages to build SDL3, please refer to the [SDL3 FAQ](https://github.com/libsdl-org/SDL/blob/main/docs/README-linux.md)*
 
 ## Controls
 - **Left Click:** Toggle the state of a cell (alive or dead).
