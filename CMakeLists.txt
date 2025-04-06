@@ -82,6 +82,12 @@ if(WIN32)
     target_sources(GameOfLife PRIVATE "resources/app.rc")
 endif(WIN32)
 
+if(MSVC)
+  target_compile_options(GameOfLife PRIVATE /W4 /WX)
+else()
+  target_compile_options(GameOfLife PRIVATE -Wall -Wextra -Wpedantic -Werror)
+endif()
+
 target_link_libraries(GameOfLife PUBLIC SDL3::SDL3-static glad41core glm)
 target_include_directories(GameOfLife PUBLIC ${stb_SOURCE_DIR})
 

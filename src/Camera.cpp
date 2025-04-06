@@ -46,10 +46,10 @@ void Camera::translate(glm::vec2 translation)
     clamp_target_position();
 }
 
-void Camera::set_size(glm::vec2 screen_size)
+void Camera::set_size(glm::vec2 size)
 {
     dirty = true;
-    this->screen_size = screen_size;
+    screen_size = size;
 }
 
 void Camera::set_zoom(float value)

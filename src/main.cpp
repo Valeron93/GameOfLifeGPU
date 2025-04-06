@@ -14,6 +14,8 @@
 
 SDL_AppResult SDL_AppInit(void** state, int argc, char** argv)
 {
+    (void)argc;
+    (void)argv;
     if (!SDL_Init(SDL_INIT_VIDEO)) {
         return SDL_APP_FAILURE;
     }
@@ -78,6 +80,7 @@ SDL_AppResult SDL_AppEvent(void* state, SDL_Event* event)
 
 void SDL_AppQuit(void* state, SDL_AppResult result)
 {
+    (void)result;
     auto& app = *(Application*)state;
     ImGui_ImplSDL3_Shutdown();
     ImGui_ImplOpenGL3_Shutdown();

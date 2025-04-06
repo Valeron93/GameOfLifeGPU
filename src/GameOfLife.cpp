@@ -1,10 +1,10 @@
 #include "GameOfLife.h"
 
 GameOfLife::GameOfLife(int size)
-    : random_algorithm(std::random_device {}())
-    , random_distribution(0.1f, 0.9f)
-    , width(size)
+    : width(size)
     , height(size)
+    , random_algorithm(std::random_device {}())
+    , random_distribution(0.1f, 0.9f)
 {
     conway_program = shader::load_path("res/default.vert", "res/conway.frag");
     random_texture_program = shader::load_path("res/default.vert", "res/random_tex.frag");
@@ -60,7 +60,7 @@ void GameOfLife::set_cell(int x, int y, bool value)
 
     GLubyte color[4] = { 0xFF, 0xFF, 0xFF, 0xFF };
     if (!value) {
-        std::fill(color, color + 3, 0);
+        std::fill(color, color + 3, (GLubyte)0);
     }
 
     glActiveTexture(GL_TEXTURE0);

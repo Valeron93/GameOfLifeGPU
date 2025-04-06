@@ -18,7 +18,7 @@ public:
 
     void zoom_by(glm::vec2 mouse_point, float scale, float zoom_min, float zoom_max);
     void translate(glm::vec2 translation);
-    void set_size(glm::vec2 screen_size);
+    void set_size(glm::vec2 size);
     void set_zoom(float zoom);
 
     float get_zoom() const;

@@ -125,8 +125,6 @@ void Application::imgui()
 
 void Application::on_event(SDL_Event* event)
 {
-    auto& io = ImGui::GetIO();
-
     switch (event->type) {
     case SDL_EVENT_MOUSE_BUTTON_DOWN:
     case SDL_EVENT_MOUSE_BUTTON_UP:
@@ -241,11 +239,7 @@ void Application::update()
     SDL_GetWindowSizeInPixels(window, &window_size_px.x, &window_size_px.y);
     cam.set_size(window_size);
 
-    auto keyboard = SDL_GetKeyboardState(nullptr);
-
-    auto& io = ImGui::GetIO();
-
-    iteration_timer += delta_time;
+    iteration_timer += (float)delta_time;
 
     if (iterate && iteration_timer > 1.0f / float(iterations_per_sec)) {
         game_of_life.iterate();
