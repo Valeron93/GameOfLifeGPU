@@ -19,8 +19,18 @@ jobs:
       #
       # To add more build types (Release, Debug, RelWithDebInfo, etc.) customize the build_type list.
       matrix:
-        os: [windows-2025, macos-latest, ubuntu-latest]
-        build_type: [Release]
+        include:
+          - os: windows-2025
+            c_compiler: cl
+            cpp_compiler: cl
+          
+          - os: macos-latest
+            c_compiler: clang
+            cpp_compiler: clang++
+
+          - os: ubuntu-latest
+            c_compiler: gcc
+            cpp_compiler: g++
 
     steps:
     - uses: actions/checkout@v4
