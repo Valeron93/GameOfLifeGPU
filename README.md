@@ -30,11 +30,12 @@ cpack
 ## Current TODOs
 - [x] Implement basic Conway's Game Of Life running on GPU
 - [x] Add dragging, zooming
-- [x] Set up GitHub Actions for automated releases (currently Windows only)
+- [x] Set up GitHub Actions for automated releases
 - [x] Implement random field generation on GPU
 - [x] Add dynamic field resizing
 - [ ] Experiment with visual effects
 - [ ] Implement drawing on the field
+- [ ] Emit signed macOS Bundle  
 
 ## Credits
 - [Conway's Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life)
