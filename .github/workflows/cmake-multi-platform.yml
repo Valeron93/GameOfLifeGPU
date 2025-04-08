@@ -2,7 +2,13 @@
 # See: https://github.com/actions/starter-workflows/blob/main/ci/cmake-single-platform.yml
 name: CMake on multiple platforms
 
-on: push
+on: 
+  push:
+    paths:
+    - src/**
+    - resources/**
+    - res/**
+    - CMakeLists.txt
 
 jobs:
   build:
