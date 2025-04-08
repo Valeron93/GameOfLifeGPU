@@ -12,6 +12,8 @@
 
 #include "Application.h"
 
+#include <filesystem>
+
 SDL_AppResult SDL_AppInit(void** state, int argc, char** argv)
 {
     (void)argc;
@@ -34,6 +36,16 @@ SDL_AppResult SDL_AppInit(void** state, int argc, char** argv)
     ImGui::CreateContext();
     ImGui_ImplSDL3_InitForOpenGL(window, gl_context);
     ImGui_ImplOpenGL3_Init();
+
+    auto& io = ImGui::GetIO();
+    const auto pref_path = SDL_GetPrefPath("Valeron93", "GameOfLife");
+    const auto imgui_ini_filename = std::string(pref_path) + "imgui.ini";
+
+    /*
+        TODO: figure a way to free the filename string before destroying
+        ImGui context, but after ImGui is able to save it's settings
+    */
+    io.IniFilename = SDL_strdup(imgui_ini_filename.c_str());
 
     auto* app = new Application(window, gl_context);
     app->last_time = SDL_GetPerformanceCounter();
@@ -82,6 +94,7 @@ void SDL_AppQuit(void* state, SDL_AppResult result)
 {
     (void)result;
     auto& app = *(Application*)state;
+
     ImGui_ImplSDL3_Shutdown();
     ImGui_ImplOpenGL3_Shutdown();
     ImGui::DestroyContext();
