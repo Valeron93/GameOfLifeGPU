@@ -1,5 +1,6 @@
 #include "util.h"
 #include <SDL3/SDL.h>
+#include <filesystem>
 
 namespace util {
 
