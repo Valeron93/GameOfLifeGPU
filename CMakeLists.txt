@@ -92,7 +92,20 @@ target_link_libraries(GameOfLife PUBLIC SDL3::SDL3-static glad41core glm)
 target_include_directories(GameOfLife PUBLIC ${stb_SOURCE_DIR})
 
 install(TARGETS GameOfLife DESTINATION .)
-install(DIRECTORY ${CMAKE_SOURCE_DIR}/res DESTINATION .)
+if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+    set_target_properties(GameOfLife PROPERTIES
+        MACOSX_BUNDLE TRUE)
+
+    add_custom_command(
+        TARGET GameOfLife 
+        POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+            ${CMAKE_SOURCE_DIR}/res
+            "$<TARGET_BUNDLE_CONTENT_DIR:GameOfLife>/Resources/res"
+    )
+else()
+    install(DIRECTORY ${CMAKE_SOURCE_DIR}/res DESTINATION .)
+endif()
 
 set(CPACK_GENERATOR "ZIP")
 include(CPack)
