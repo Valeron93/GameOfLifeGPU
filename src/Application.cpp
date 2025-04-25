@@ -197,10 +197,22 @@ void Application::on_keyboard_event(SDL_Event* event)
             game_of_life.iterate();
         }
     }
+
+    if (fullscreen && hide_gui) {
+        SDL_HideCursor();
+        SDL_SetWindowRelativeMouseMode(window, true);
+    } else {
+        SDL_SetWindowRelativeMouseMode(window, false);
+        SDL_ShowCursor();
+    }
 }
 
 void Application::on_mouse_btn_event(SDL_Event* event)
 {
+    if (fullscreen && hide_gui) {
+        return;
+    }
+
     if (event->type == SDL_EVENT_MOUSE_BUTTON_DOWN && event->button.button == SDL_BUTTON_LEFT) {
         auto mouse = glm::vec4(event->button.x, event->button.y, 0.0f, 1.0f);
 
